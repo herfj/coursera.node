@@ -1,0 +1,13 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDAxYmFkYWI0NmU2NjMzZGMyMTJmMmUiLCJpYXQiOjE2MTA3MjYxMjMsImV4cCI6MTYxMDcyOTcyM30.Z6OZ8lXQ8TyyyiLb3_lstYtryfCmtV-rRjBsVcLgr2k
+
+{  
+    "label": "hot",
+    "featured": true,
+    "_id": "5ffb5850f9d2f60bd09733ea",
+    "name": "Uthappizza",
+    "image": "images/uthappizza.png",
+    "category": "mains",
+    "price": 5,
+    "description": "A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.",
+    "comments": []
+}
