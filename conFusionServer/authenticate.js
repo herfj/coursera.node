@@ -37,20 +37,20 @@ exports.jwtPassport = passport.use(
 
 exports.verifyUser = passport.authenticate("jwt", { session: false });
 
-exports.verifyAdmin = function (req, res, next) {
-	passport.authenticate("local", function (err, req, info) {
-		user = req.user;
-		if (err) {
-			return next(err);
-		}
-		if (!user) {
-			return res.redirect("/login");
-		}
-		req.logIn(user, function (err) {
-			if (err) {
-				return next(err);
-			}
-			return res.redirect("/users/" + user.username);
-		});
-	})(req, res, next);
-};
+// exports.verifyAdmin = function (req, res, next) {
+// 	passport.authenticate("local", function (err, req, info) {
+// 		user = req.user;
+// 		if (err) {
+// 			return next(err);
+// 		}
+// 		if (!user) {
+// 			return res.redirect("/login");
+// 		}
+// 		req.logIn(user, function (err) {
+// 			if (err) {
+// 				return next(err);
+// 			}
+// 			return res.redirect("/users/" + user.username);
+// 		});
+// 	})(req, res, next);
+// };
