@@ -10,7 +10,8 @@ var corsOptionsDelegate = (req, callback) => {
 	if (whitelist.indexOf(req.header("Origin")) != -1) {
 		corsOptions = { origin: true };
 	} else {
-		corsOptions = { origin: false };
+		// corsOptions = { origin: false };
+		callback(new Error("Not allowed by CORS"));
 	}
 	callback(null, corsOptions);
 };

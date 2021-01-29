@@ -13,7 +13,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 exports.getToken = function (user) {
-	return jwt.sign(user, config.secretKey, { expiresIn: 3600 });
+	return jwt.sign(user, config.secretKey, { expiresIn: 3600000 });
 };
 
 var opts = {};
@@ -37,20 +37,16 @@ exports.jwtPassport = passport.use(
 
 exports.verifyUser = passport.authenticate("jwt", { session: false });
 
-// exports.verifyAdmin = function (req, res, next) {
-// 	passport.authenticate("local", function (err, req, info) {
-// 		user = req.user;
-// 		if (err) {
-// 			return next(err);
-// 		}
-// 		if (!user) {
-// 			return res.redirect("/login");
-// 		}
-// 		req.logIn(user, function (err) {
-// 			if (err) {
-// 				return next(err);
-// 			}
-// 			return res.redirect("/users/" + user.username);
-// 		});
-// 	})(req, res, next);
-// };
+exports.verifyAdmin = (req, res, next) => {
+	console.log(req.user.admin);
+	var isAdmin = req.user.admin;
+	if (!isAdmin) {
+		var err = new Error("You are not authorized to perform this operation!");
+		res.setHeader("WWW-Authenticate", "Basic");
+		err.status = 403;
+		next(err);
+		return;
+	} else {
+		next();
+	}
+};

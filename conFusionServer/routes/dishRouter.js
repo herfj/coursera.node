@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("./cors");
-const cors1 = require("cors");
 const Dishes = require("../models/dishes");
 const authenticate = require("../authenticate");
 
@@ -10,19 +9,6 @@ const dishRouter = express.Router();
 
 dishRouter.use(bodyParser.json());
 
-// var whitelist = ["http://localhost:3000/", "https://localhost:3443/"];
-// var corsOptions = {
-// 	origin: function (origin, callback) {
-// 		console.log(origin);
-// 		console.log(whitelist.indexOf(origin));
-// 		if (whitelist.indexOf(origin) !== -1) {
-// 			callback(null, true);
-// 		} else {
-// 			console.log("error expected");
-// 			callback(new Error("Not allowed by CORS"));
-// 		}
-// 	},
-// };
 dishRouter
 	.route("/")
 	.options(cors.corsWithOptions, (req, res) => {
@@ -93,25 +79,30 @@ dishRouter
 		res.statusCode = 403;
 		res.end("POST operation not supported on /dishes/" + req.params.dishId);
 	})
-	.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-		Dishes.findByIdAndUpdate(
-			req.params.dishId,
-			{
-				$set: req.body,
-			},
-			{ new: true }
-		)
-			.then(
-				(dish) => {
-					res.statusCode = 200;
-					res.setHeader("Content-Type", "application/json");
-					res.json(dish);
+	.put(
+		cors.corsWithOptions,
+		authenticate.verifyUser,
+		authenticate.verifyAdmin,
+		(req, res, next) => {
+			Dishes.findByIdAndUpdate(
+				req.params.dishId,
+				{
+					$set: req.body,
 				},
-				(err) => next(err)
+				{ new: true }
 			)
-			.catch((err) => next(err));
-	})
-	.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+				.then(
+					(dish) => {
+						res.statusCode = 200;
+						res.setHeader("Content-Type", "application/json");
+						res.json(dish);
+					},
+					(err) => next(err)
+				)
+				.catch((err) => next(err));
+		}
+	)
+	.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
 		Dishes.deleteOne({ _id: req.params.dishId })
 			.then(
 				(resp) => {
